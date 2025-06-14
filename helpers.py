@@ -48,19 +48,3 @@ class OrderAPI:
             json={"ingredients": ingredients},
             headers=headers
         )
-
-
-
-"""
-    @staticmethod
-    def get_ingredients():
-        # Получаем список ингредиентов
-        return requests.get(Url.BASE_URL + Url.INGREDIENTS_GET_URL)
-    
-
-    @staticmethod
-    def get_access_token(user_data):
-        # Авторизовываем пользователя с предоставленными данными
-        response = requests.post(Url.BASE_URL + Url.USER_LOGIN_URL, json=user_data)
-        return response.json()['accessToken']
-"""
