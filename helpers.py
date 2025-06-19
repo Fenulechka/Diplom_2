@@ -1,4 +1,6 @@
 import requests
+import allure
+
 from faker import Faker
 from urls import Url
 
@@ -7,8 +9,8 @@ fake = Faker()
 
 class UserAPI:
     @staticmethod
+    @allure.step("Генерируем случайные данные пользователя")
     def generate_random_user():
-        # Генерируем случайные данные пользователя
         return {
             'email': fake.email(),
             'password': fake.password(),
@@ -17,15 +19,15 @@ class UserAPI:
 
 
     @staticmethod
+    @allure.step("Регистрируем пользователя с предоставленными данными")
     def register(user_data):
-         # Регистрируем пользователя с предоставленными данными
         response = requests.post(Url.BASE_URL + Url.USER_REGISTRATION_URL, json=user_data)
         return response
 
 
     @staticmethod
+    @allure.step("Удаляем пользователя")
     def delete_user(access_token):
-        # Удаляет пользователя
 
         headers  = {'Authorization': f'Bearer {access_token}'}
 
@@ -35,8 +37,8 @@ class UserAPI:
 
 class OrderAPI:
     @staticmethod
+    @allure.step("Создаем заказ с указанными ингредиентами")
     def create_order(registered_user, ingredients):
-        # Создаем заказ с указанными ингредиентами
         user_data = registered_user
         headers = {
             'Authorization': user_data['access_token'],

@@ -38,12 +38,16 @@ class TestUpdateUser:
 
     @allure.title('Проверка изменения данных пользователя без авторизации, система вернёт ошибку')
     def test_update_data_user_unauth_error(self):
-        new_payload = UserAPI.generate_random_user()
+        with allure.step("Генерация новых данных пользователя"):
+            new_payload = UserAPI.generate_random_user()
 
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        response = requests.patch(Url.BASE_URL + Url.USER_DATA_URL, headers=headers, json=new_payload)
+        with allure.step("Подготовка заголовков для PATCH-запроса"):
+            headers = {
+                'Content-Type': 'application/json'
+            }
+
+        with allure.step("Выполнение PATCH-запроса на изменение данных пользователя без авторизации"):
+            response = requests.patch(Url.BASE_URL + Url.USER_DATA_URL, headers=headers, json=new_payload)
 
         assert response.status_code == 401
         assert response.json()['message'] == ErrorMessages.UNAUTHORIZED_ACCESS
