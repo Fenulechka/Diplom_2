@@ -15,6 +15,7 @@ class TestCreateOrderWithAuth:
         with allure.step("Парсим JSON-ответ"):
             response_data = response.json()
 
+        with allure.step('Проверка ответа сервера'):
             assert response.status_code == 200
             assert response_data['success'] is True
             assert 'name' in response_data
@@ -30,6 +31,7 @@ class TestCreateOrderWithAuth:
         with allure.step("Парсим JSON-ответ"):
             response_data = response.json()
 
+        with allure.step('Проверка ответа сервера'):
             assert response.status_code == 400
             assert response_data['success'] is False
             assert response_data['message'] == ErrorMessages.MISSING_INGREDIENTS
@@ -40,6 +42,7 @@ class TestCreateOrderWithAuth:
         with allure.step("Создаем заказ с невалидным хешем ингредиента"):
             response = OrderAPI.create_order(registered_user, IngredientsData.INVALID_HASH_INGREDIENT)
 
+        with allure.step('Проверка ответа сервера'):
             assert response.status_code == 500
             assert ErrorMessages.INTERNAL_SERVER_ERROR in response.text
 
@@ -53,6 +56,7 @@ class TestCreateOrderUnAuth:
 
             response_data = response.json()
 
+        with allure.step('Проверка ответа сервера'):
             assert response.status_code == 200
             assert response_data['success'] is True
 
@@ -64,6 +68,7 @@ class TestCreateOrderUnAuth:
 
             response_data = response.json()
 
+        with allure.step('Проверка ответа сервера'):
             assert response.status_code == 400
             assert response_data['success'] is False
             assert response_data['message'] == ErrorMessages.MISSING_INGREDIENTS
@@ -74,5 +79,6 @@ class TestCreateOrderUnAuth:
         with allure.step("Создаем заказ без авторизации, с невалидным хешем ингредиента"):
             response = requests.post(Url.BASE_URL + Url.ORDER_CREATION_POST_URL, json={"ingredients": IngredientsData.INVALID_HASH_INGREDIENT})
 
+        with allure.step('Проверка ответа сервера'):
             assert response.status_code == 500
             assert ErrorMessages.INTERNAL_SERVER_ERROR in response.text

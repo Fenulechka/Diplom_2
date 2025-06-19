@@ -30,10 +30,11 @@ class TestUpdateUser:
         with allure.step('Проверяем ответ'):
             response_data = response.json()
 
-        assert response.status_code == 200
-        assert response_data['success'] is True
-        assert response_data['user']['email'] == new_data['email']
-        assert response_data['user']['name'] == new_data['name']
+        with allure.step('Проверка ответа сервера'):
+            assert response.status_code == 200
+            assert response_data['success'] is True
+            assert response_data['user']['email'] == new_data['email']
+            assert response_data['user']['name'] == new_data['name']
 
 
     @allure.title('Проверка изменения данных пользователя без авторизации, система вернёт ошибку')
@@ -49,5 +50,6 @@ class TestUpdateUser:
         with allure.step("Выполнение PATCH-запроса на изменение данных пользователя без авторизации"):
             response = requests.patch(Url.BASE_URL + Url.USER_DATA_URL, headers=headers, json=new_payload)
 
-        assert response.status_code == 401
-        assert response.json()['message'] == ErrorMessages.UNAUTHORIZED_ACCESS
+        with allure.step('Проверка ответа сервера'):
+            assert response.status_code == 401
+            assert response.json()['message'] == ErrorMessages.UNAUTHORIZED_ACCESS
